@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit",
+      "Write",
+      "Bash(npx tsc *)",
+      "Bash(npx prisma generate*)",
+      "Bash(npx prisma migrate *)",
+      "Bash(npx prisma studio*)",
+      "Bash(npx prisma db *)",
+      "Bash(npm run dev*)",
+      "Bash(npm run build*)",
+      "Bash(npm run start*)",
+      "Bash(npm run lint*)",
+      "Bash(npm install *)",
+      "Bash(npm install)"
+    ],
+    "deny": []
+  }
+}
