@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(STUDENT)
+  phone     String?
+  createdAt DateTime @default(now())
+
+  dorms     Dorm[]
+  reviews   Review[]
+  wishlists Wishlist[]
+  inquiries Inquiry[]  @relation("InquiryFrom")
+}
+
+enum Role {
+  STUDENT
+  OWNER
+}
+
+model Dorm {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Int
+  priceMax    Int?
+  type        DormType
+  lat         Float
+  lng         Float
+  address     String
+  phone       String?
+  lineId      String?
+  facebookUrl String?
+  images      String[]
+  amenities   String[]
+  isAvailable Boolean  @default(true)
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner     User       @relation(fields: [ownerId], references: [id])
+  rooms     Room[]
+  reviews   Review[]
+  wishlists Wishlist[]
+  inquiries Inquiry[]
+}
+
+enum DormType {
+  FEMALE
+  MALE
+  MIXED
+}
+
+model Room {
+  id          String  @id @default(cuid())
+  dormId      String
+  name        String
+  price       Int
+  isAvailable Boolean @default(true)
+
+  dorm Dorm @relation(fields: [dormId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  dormId    String
+  userId    String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+
+  dorm Dorm @relation(fields: [dormId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Wishlist {
+  id     String @id @default(cuid())
+  userId String
+  dormId String
+
+  user User @relation(fields: [userId], references: [id])
+  dorm Dorm @relation(fields: [dormId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, dormId])
+}
+
+model Inquiry {
+  id        String   @id @default(cuid())
+  dormId    String
+  fromId    String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  dorm Dorm @relation(fields: [dormId], references: [id], onDelete: Cascade)
+  from User @relation("InquiryFrom", fields: [fromId], references: [id])
+}
