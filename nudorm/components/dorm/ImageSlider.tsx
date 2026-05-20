@@ -18,14 +18,14 @@ export default function ImageSlider({ images, name }: { images: string[]; name: 
   const next = () => setCurrent((i) => (i === images.length - 1 ? 0 : i + 1));
 
   return (
-    <div className="relative mb-8 rounded-2xl overflow-hidden group" style={{ height: "440px" }}>
+    <div className="relative mb-8 rounded-2xl overflow-hidden group bg-gray-100" style={{ height: "440px" }}>
       {/* Images */}
       <div className="w-full h-full relative">
         <Image
           src={images[current]}
           alt={`${name} รูปที่ ${current + 1}`}
           fill
-          className="object-cover transition-opacity duration-300"
+          className="object-contain transition-opacity duration-300"
           sizes="(max-width: 1280px) 100vw, 1024px"
           priority
         />
