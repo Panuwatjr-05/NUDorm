@@ -53,6 +53,7 @@ export default function Navbar() {
           {session?.user.role === "STUDENT" && navLink("/wishlist", "บันทึกไว้")}
           {session?.user.role === "OWNER" && navLink("/dashboard", "Dashboard")}
           {session?.user.role === "OWNER" && navLink("/feedback", "Feedback")}
+          {session?.user.role === "ADMIN" && navLink("/admin", "Admin Panel")}
         </div>
 
         {/* Desktop right */}
@@ -108,7 +109,8 @@ export default function Navbar() {
             ...(session?.user.role === "STUDENT" ? [{ href: "/compare", label: "เปรียบเทียบ" }] : []),
             ...(session?.user.role === "STUDENT" ? [{ href: "/wishlist", label: "บันทึกไว้" }] : []),
             ...(session?.user.role === "OWNER" ? [{ href: "/dashboard", label: "Dashboard" }] : []),
-            ...(session?.user.role === "OWNER" ? [{ href: "/inquiries", label: "คำถาม" }] : []),
+            ...(session?.user.role === "OWNER" ? [{ href: "/feedback", label: "Feedback" }] : []),
+            ...(session?.user.role === "ADMIN" ? [{ href: "/admin", label: "Admin Panel" }] : []),
           ].map(({ href, label }) => (
             <Link
               key={href}
