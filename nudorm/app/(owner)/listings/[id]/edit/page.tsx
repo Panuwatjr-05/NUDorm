@@ -23,6 +23,7 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
     facebookUrl: "",
     electricityRate: "",
     waterRate: "",
+    waterRateType: "FLAT",
     deposit: "",
     isAvailable: true,
     amenities: [] as string[],
@@ -51,6 +52,7 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
           facebookUrl: data.facebookUrl ?? "",
           electricityRate: data.electricityRate?.toString() ?? "",
           waterRate: data.waterRate?.toString() ?? "",
+          waterRateType: data.waterRateType ?? "FLAT",
           deposit: data.deposit?.toString() ?? "",
           isAvailable: data.isAvailable ?? true,
           amenities: data.amenities ?? [],
@@ -223,19 +225,12 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>ค่าไฟ (บาท/หน่วย)</label>
             <input type="number" min="0" placeholder="8"
               value={form.electricityRate}
               onChange={(e) => setForm({ ...form, electricityRate: e.target.value })}
-              className={inputClass} />
-          </div>
-          <div>
-            <label className={labelClass}>ค่าน้ำ (บาท/เดือน)</label>
-            <input type="number" min="0" placeholder="100"
-              value={form.waterRate}
-              onChange={(e) => setForm({ ...form, waterRate: e.target.value })}
               className={inputClass} />
           </div>
           <div>
@@ -245,6 +240,34 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
               onChange={(e) => setForm({ ...form, deposit: e.target.value })}
               className={inputClass} />
           </div>
+        </div>
+
+        <div>
+          <label className={labelClass}>ค่าน้ำ</label>
+          <div className="grid grid-cols-2 gap-2 mb-2">
+            {[
+              { value: "FLAT", label: "เหมาจ่าย (บาท/เดือน)" },
+              { value: "METERED", label: "คิดตามมิเตอร์ (บาท/หน่วย)" },
+            ].map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => setForm({ ...form, waterRateType: opt.value })}
+                className={`py-2.5 rounded-xl border-2 text-sm font-medium transition-colors ${
+                  form.waterRateType === opt.value
+                    ? "border-blue-700 bg-blue-50 text-blue-700"
+                    : "border-gray-200 text-gray-700 hover:border-blue-400"
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+          <input type="number" min="0"
+            placeholder={form.waterRateType === "FLAT" ? "100 บาท/เดือน" : "18 บาท/หน่วย"}
+            value={form.waterRate}
+            onChange={(e) => setForm({ ...form, waterRate: e.target.value })}
+            className={inputClass} />
         </div>
 
         <div className="flex items-center gap-3">

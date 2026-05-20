@@ -44,7 +44,7 @@ export default async function DormDetailPage({ params }: { params: Promise<{ id:
       }))
     : false;
 
-  const dormFull = dorm as typeof dorm & { lineId?: string | null; facebookUrl?: string | null; electricityRate?: number | null; waterRate?: number | null; deposit?: number | null };
+  const dormFull = dorm as typeof dorm & { lineId?: string | null; facebookUrl?: string | null; electricityRate?: number | null; waterRate?: number | null; waterRateType?: string | null; deposit?: number | null };
 
   return (
     <div className="max-w-5xl mx-auto pb-16">
@@ -205,7 +205,12 @@ export default async function DormDetailPage({ params }: { params: Promise<{ id:
                   {dormFull.waterRate && (
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">ค่าน้ำ</span>
-                      <span className="font-semibold text-gray-800">฿{dormFull.waterRate}/เดือน</span>
+                      <span className="font-semibold text-gray-800">
+                        ฿{dormFull.waterRate}/{dormFull.waterRateType === "METERED" ? "หน่วย" : "เดือน"}
+                        <span className="text-xs text-gray-400 font-normal ml-1">
+                          ({dormFull.waterRateType === "METERED" ? "ตามมิเตอร์" : "เหมาจ่าย"})
+                        </span>
+                      </span>
                     </div>
                   )}
                   {dormFull.deposit && (

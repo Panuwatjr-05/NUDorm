@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { name, description, price, priceMax, type, lat, lng, address, phone, lineId, facebookUrl, amenities, images, rooms, electricityRate, waterRate, deposit } = body;
+  const { name, description, price, priceMax, type, lat, lng, address, phone, lineId, facebookUrl, amenities, images, rooms, electricityRate, waterRate, waterRateType, deposit } = body;
 
   if (!name || !price || !type || !lat || !lng || !address) {
     return NextResponse.json({ error: "กรุณากรอกข้อมูลที่จำเป็น" }, { status: 400 });
@@ -75,6 +75,7 @@ export async function POST(req: NextRequest) {
       ownerId: session.user.id,
       electricityRate: electricityRate ? parseInt(electricityRate) : null,
       waterRate: waterRate ? parseInt(waterRate) : null,
+      waterRateType: waterRateType === "METERED" ? "METERED" : "FLAT",
       deposit: deposit ? parseInt(deposit) : null,
     },
   });

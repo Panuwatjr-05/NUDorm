@@ -25,6 +25,7 @@ export default function NewListingPage() {
     facebookUrl: "",
     electricityRate: "",
     waterRate: "",
+    waterRateType: "FLAT",
     deposit: "",
     amenities: [] as string[],
   });
@@ -254,10 +255,33 @@ export default function NewListingPage() {
           {field("Facebook URL", input("facebookUrl", { placeholder: "facebook.com/yourpage" }))}
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {field("ค่าไฟ (บาท/หน่วย)", input("electricityRate", { type: "number", min: "0", placeholder: "8" }))}
-          {field("ค่าน้ำ (บาท/เดือน)", input("waterRate", { type: "number", min: "0", placeholder: "100" }))}
           {field("เงินประกัน (บาท)", input("deposit", { type: "number", min: "0", placeholder: "3000" }))}
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-1.5">ค่าน้ำ</label>
+          <div className="grid grid-cols-2 gap-2 mb-2">
+            {[
+              { value: "FLAT", label: "เหมาจ่าย (บาท/เดือน)" },
+              { value: "METERED", label: "คิดตามมิเตอร์ (บาท/หน่วย)" },
+            ].map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => setForm({ ...form, waterRateType: opt.value })}
+                className={`py-2.5 rounded-xl border-2 text-sm font-medium transition-colors ${
+                  form.waterRateType === opt.value
+                    ? "border-blue-700 bg-blue-50 text-blue-700"
+                    : "border-gray-200 text-gray-700 hover:border-blue-400"
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+          {input("waterRate", { type: "number", min: "0", placeholder: form.waterRateType === "FLAT" ? "100 บาท/เดือน" : "18 บาท/หน่วย" })}
         </div>
 
         {/* Rooms */}

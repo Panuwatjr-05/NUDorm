@@ -56,6 +56,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       facebookUrl: body.facebookUrl || null,
       electricityRate: body.electricityRate ? parseInt(body.electricityRate) : null,
       waterRate: body.waterRate ? parseInt(body.waterRate) : null,
+      waterRateType: body.waterRateType === "METERED" ? "METERED" : "FLAT",
       deposit: body.deposit ? parseInt(body.deposit) : null,
     },
   });
