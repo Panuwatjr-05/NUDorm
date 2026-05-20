@@ -21,6 +21,9 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
     lng: "",
     lineId: "",
     facebookUrl: "",
+    electricityRate: "",
+    waterRate: "",
+    deposit: "",
     isAvailable: true,
     amenities: [] as string[],
     images: [] as string[],
@@ -46,6 +49,9 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
           lng: data.lng?.toString() ?? "",
           lineId: data.lineId ?? "",
           facebookUrl: data.facebookUrl ?? "",
+          electricityRate: data.electricityRate?.toString() ?? "",
+          waterRate: data.waterRate?.toString() ?? "",
+          deposit: data.deposit?.toString() ?? "",
           isAvailable: data.isAvailable ?? true,
           amenities: data.amenities ?? [],
           images: data.images ?? [],
@@ -214,6 +220,30 @@ export default function EditListingPage({ params }: { params: Promise<{ id: stri
               placeholder="facebook.com/yourpage"
               className={inputClass}
             />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          <div>
+            <label className={labelClass}>ค่าไฟ (บาท/หน่วย)</label>
+            <input type="number" min="0" placeholder="8"
+              value={form.electricityRate}
+              onChange={(e) => setForm({ ...form, electricityRate: e.target.value })}
+              className={inputClass} />
+          </div>
+          <div>
+            <label className={labelClass}>ค่าน้ำ (บาท/เดือน)</label>
+            <input type="number" min="0" placeholder="100"
+              value={form.waterRate}
+              onChange={(e) => setForm({ ...form, waterRate: e.target.value })}
+              className={inputClass} />
+          </div>
+          <div>
+            <label className={labelClass}>เงินประกัน (บาท)</label>
+            <input type="number" min="0" placeholder="3000"
+              value={form.deposit}
+              onChange={(e) => setForm({ ...form, deposit: e.target.value })}
+              className={inputClass} />
           </div>
         </div>
 

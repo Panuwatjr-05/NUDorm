@@ -54,6 +54,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       ...(body.lng && { lng: parseFloat(body.lng) }),
       lineId: body.lineId || null,
       facebookUrl: body.facebookUrl || null,
+      electricityRate: body.electricityRate ? parseInt(body.electricityRate) : null,
+      waterRate: body.waterRate ? parseInt(body.waterRate) : null,
+      deposit: body.deposit ? parseInt(body.deposit) : null,
     },
   });
 
