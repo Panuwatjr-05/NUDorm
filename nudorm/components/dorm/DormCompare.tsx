@@ -24,9 +24,17 @@ const TYPE_LABEL: Record<string, string> = {
   MIXED: "ทั้งสองเพศ",
 };
 
+function LabelCell({ children }: { children: React.ReactNode }) {
+  return (
+    <td className="px-5 py-3.5 text-sm font-medium text-gray-500 border-b border-gray-100 bg-gray-50/60 whitespace-nowrap w-36">
+      {children}
+    </td>
+  );
+}
+
 function Cell({ children, highlight }: { children: React.ReactNode; highlight?: boolean }) {
   return (
-    <td className={`px-4 py-3 text-sm text-center border-b border-gray-100 ${highlight ? "bg-blue-50 font-medium text-blue-700" : "text-gray-700"}`}>
+    <td className={`px-5 py-3.5 text-sm text-center border-b border-gray-100 transition-colors ${highlight ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-700"}`}>
       {children}
     </td>
   );
@@ -66,10 +74,10 @@ export default function DormCompare({ initialIds }: { initialIds: string[] }) {
   const highestRating = dorms.length > 0 ? Math.max(...dorms.map((d) => d.avgRating ?? 0)) : null;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Selector */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-        <p className="text-sm font-medium text-gray-700 mb-3">
+        <p className="text-sm font-medium text-gray-600 mb-3">
           เลือกหอที่ต้องการเปรียบเทียบ (2-3 แห่ง) — เลือกแล้ว {selectedIds.length}/3
         </p>
         <div className="flex flex-wrap gap-2">
@@ -77,12 +85,12 @@ export default function DormCompare({ initialIds }: { initialIds: string[] }) {
             <button
               key={d.id}
               onClick={() => toggleDorm(d.id)}
-              className={`text-sm px-3 py-1.5 rounded-full border transition-colors ${
+              className={`text-sm px-3.5 py-1.5 rounded-full border-2 font-medium transition-colors ${
                 selectedIds.includes(d.id)
-                  ? "border-blue-700 bg-blue-700 text-white"
+                  ? "border-blue-600 bg-blue-600 text-white"
                   : selectedIds.length >= 3
-                  ? "border-gray-200 text-gray-400 cursor-not-allowed"
-                  : "border-gray-300 text-gray-600 hover:border-blue-400"
+                  ? "border-gray-100 text-gray-300 cursor-not-allowed bg-gray-50"
+                  : "border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-600"
               }`}
               disabled={!selectedIds.includes(d.id) && selectedIds.length >= 3}
             >
@@ -93,103 +101,158 @@ export default function DormCompare({ initialIds }: { initialIds: string[] }) {
         {allDorms.length === 0 && (
           <p className="text-gray-400 text-sm">
             ยังไม่มีหอพัก —{" "}
-            <Link href="/listings/new" className="text-blue-700">ลงประกาศก่อน</Link>
+            <Link href="/listings/new" className="text-blue-600 font-medium">ลงประกาศก่อน</Link>
           </p>
         )}
       </div>
 
-      {/* Compare table */}
+      {/* Empty state */}
       {selectedIds.length < 2 && (
-        <div className="text-center py-12 text-gray-400">
-          <div className="text-4xl mb-3">⚖️</div>
-          <p>เลือกอย่างน้อย 2 หอเพื่อเปรียบเทียบ</p>
+        <div className="text-center py-16 text-gray-400">
+          <div className="w-14 h-14 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-7 h-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          <p className="font-medium text-gray-500">เลือกอย่างน้อย 2 หอเพื่อเปรียบเทียบ</p>
+          <p className="text-sm mt-1">กดเลือกหอพักด้านบนได้เลย</p>
         </div>
       )}
 
       {loading && (
-        <div className="text-center py-12 text-gray-400">กำลังโหลด...</div>
+        <div className="text-center py-16 text-gray-400">
+          <div className="animate-spin w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full mx-auto mb-3" />
+          <p className="text-sm">กำลังโหลด...</p>
+        </div>
       )}
 
       {!loading && dorms.length >= 2 && (
-        <div className="overflow-x-auto">
-          <table className="w-full bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto rounded-2xl border border-gray-100 shadow-sm">
+          <table className="w-full bg-white">
+            {/* Header */}
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 w-36">รายการ</th>
+              <tr className="border-b-2 border-gray-100">
+                <th className="px-5 py-4 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider bg-gray-50/60 w-36">
+                  รายการ
+                </th>
                 {dorms.map((d) => (
-                  <th key={d.id} className="px-4 py-3 text-center">
-                    <Link href={`/dorms/${d.id}`} className="font-semibold text-gray-900 hover:text-blue-700 text-sm block">
+                  <th key={d.id} className="px-5 py-4 text-center">
+                    {d.images[0] && (
+                      <img
+                        src={d.images[0]}
+                        alt={d.name}
+                        className="w-24 h-16 object-cover rounded-xl mx-auto mb-2"
+                      />
+                    )}
+                    <Link
+                      href={`/dorms/${d.id}`}
+                      className="font-bold text-gray-900 hover:text-blue-600 text-sm block transition-colors"
+                    >
                       {d.name}
                     </Link>
-                    {d.images[0] && (
-                      <img src={d.images[0]} alt={d.name} className="w-20 h-14 object-cover rounded-lg mx-auto mt-2" />
-                    )}
                   </th>
                 ))}
               </tr>
             </thead>
+
             <tbody>
+              {/* Price */}
               <tr>
-                <td className="px-4 py-3 text-sm text-gray-500 font-medium border-b border-gray-100">ราคา/เดือน</td>
+                <LabelCell>ราคา/เดือน</LabelCell>
                 {dorms.map((d) => (
                   <Cell key={d.id} highlight={d.price === lowestPrice}>
-                    ฿{d.price.toLocaleString()}
-                    {d.priceMax && `–${d.priceMax.toLocaleString()}`}
-                    {d.price === lowestPrice && <span className="ml-1 text-xs">💰 ถูกสุด</span>}
+                    <span className="font-bold">฿{d.price.toLocaleString()}</span>
+                    {d.priceMax && (
+                      <span className="text-gray-400 font-normal">–{d.priceMax.toLocaleString()}</span>
+                    )}
+                    {d.price === lowestPrice && (
+                      <span className="block text-xs text-blue-500 font-normal mt-0.5">ราคาถูกสุด</span>
+                    )}
                   </Cell>
                 ))}
               </tr>
+
+              {/* Type */}
               <tr>
-                <td className="px-4 py-3 text-sm text-gray-500 font-medium border-b border-gray-100">ประเภท</td>
+                <LabelCell>ประเภท</LabelCell>
                 {dorms.map((d) => <Cell key={d.id}>{TYPE_LABEL[d.type]}</Cell>)}
               </tr>
+
+              {/* Status */}
               <tr>
-                <td className="px-4 py-3 text-sm text-gray-500 font-medium border-b border-gray-100">สถานะ</td>
+                <LabelCell>สถานะ</LabelCell>
                 {dorms.map((d) => (
                   <Cell key={d.id}>
-                    <span className={`px-2 py-0.5 rounded-full text-xs ${d.isAvailable ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
+                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                      d.isAvailable ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
+                    }`}>
                       {d.isAvailable ? "มีห้องว่าง" : "เต็ม"}
                     </span>
                   </Cell>
                 ))}
               </tr>
+
+              {/* Rating */}
               <tr>
-                <td className="px-4 py-3 text-sm text-gray-500 font-medium border-b border-gray-100">คะแนนเฉลี่ย</td>
+                <LabelCell>คะแนนเฉลี่ย</LabelCell>
                 {dorms.map((d) => (
                   <Cell key={d.id} highlight={d.avgRating === highestRating && d.avgRating !== null}>
-                    {d.avgRating
-                      ? <>★ {d.avgRating.toFixed(1)} <span className="text-xs text-gray-400">({d._count.reviews} รีวิว)</span></>
-                      : "–"}
+                    {d.avgRating ? (
+                      <>
+                        <span className="font-bold">★ {d.avgRating.toFixed(1)}</span>
+                        <span className="text-xs text-gray-400 font-normal ml-1">({d._count.reviews} รีวิว)</span>
+                        {d.avgRating === highestRating && (
+                          <span className="block text-xs text-blue-500 font-normal mt-0.5">คะแนนสูงสุด</span>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-gray-300">–</span>
+                    )}
                   </Cell>
                 ))}
               </tr>
+
+              {/* Address */}
               <tr>
-                <td className="px-4 py-3 text-sm text-gray-500 font-medium border-b border-gray-100">ที่อยู่</td>
-                {dorms.map((d) => <Cell key={d.id}><span className="text-xs">{d.address}</span></Cell>)}
+                <LabelCell>ที่อยู่</LabelCell>
+                {dorms.map((d) => (
+                  <Cell key={d.id}>
+                    <span className="text-xs text-gray-500 leading-relaxed">{d.address}</span>
+                  </Cell>
+                ))}
               </tr>
-              {/* Amenities rows */}
+
+              {/* Section: Amenities */}
+              <tr>
+                <td colSpan={dorms.length + 1} className="px-5 py-2.5 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 border-b border-gray-100">
+                  สิ่งอำนวยความสะดวก
+                </td>
+              </tr>
               {AMENITIES_LIST.map((a) => (
                 <tr key={a}>
-                  <td className="px-4 py-3 text-sm text-gray-500 border-b border-gray-100">{a}</td>
+                  <LabelCell>{a}</LabelCell>
                   {dorms.map((d) => (
                     <Cell key={d.id}>
                       {d.amenities.includes(a) ? (
-                        <span className="text-green-500 text-lg">✓</span>
+                        <svg className="w-4 h-4 text-green-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                        </svg>
                       ) : (
-                        <span className="text-gray-300 text-lg">–</span>
+                        <span className="text-gray-200 text-lg leading-none">–</span>
                       )}
                     </Cell>
                   ))}
                 </tr>
               ))}
-              {/* CTA row */}
+
+              {/* CTA */}
               <tr>
-                <td className="px-4 py-3" />
+                <td className="px-5 py-4 bg-gray-50/60" />
                 {dorms.map((d) => (
-                  <td key={d.id} className="px-4 py-3 text-center">
+                  <td key={d.id} className="px-5 py-4 text-center">
                     <Link
                       href={`/dorms/${d.id}`}
-                      className="inline-block bg-blue-700 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-800 transition-colors"
+                      className="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2 rounded-xl transition-colors"
                     >
                       ดูรายละเอียด
                     </Link>
