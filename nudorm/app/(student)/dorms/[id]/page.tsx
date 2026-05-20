@@ -44,7 +44,7 @@ export default async function DormDetailPage({ params }: { params: Promise<{ id:
       }))
     : false;
 
-  const dormFull = dorm as typeof dorm & { lineId?: string | null; facebookUrl?: string | null };
+  const dormFull = dorm as typeof dorm & { lineId?: string | null; facebookUrl?: string | null; electricityRate?: number | null; waterRate?: number | null; deposit?: number | null };
 
   return (
     <div className="max-w-5xl mx-auto pb-16">
@@ -191,6 +191,31 @@ export default async function DormDetailPage({ params }: { params: Promise<{ id:
                   <span className="text-blue-200 text-sm">/เดือน</span>
                 </div>
               </div>
+
+              {/* Additional costs */}
+              {(dormFull.electricityRate || dormFull.waterRate || dormFull.deposit) && (
+                <div className="px-5 py-4 border-t border-gray-100 space-y-2.5">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">ค่าใช้จ่ายเพิ่มเติม</p>
+                  {dormFull.electricityRate && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">ค่าไฟ</span>
+                      <span className="font-semibold text-gray-800">฿{dormFull.electricityRate}/หน่วย</span>
+                    </div>
+                  )}
+                  {dormFull.waterRate && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">ค่าน้ำ</span>
+                      <span className="font-semibold text-gray-800">฿{dormFull.waterRate}/เดือน</span>
+                    </div>
+                  )}
+                  {dormFull.deposit && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">เงินประกัน</span>
+                      <span className="font-semibold text-gray-800">฿{dormFull.deposit.toLocaleString()}</span>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Contact info */}
               <div className="p-5 space-y-3">

@@ -37,9 +37,12 @@ model Dorm {
   lat         Float
   lng         Float
   address     String
-  phone       String?
-  lineId      String?
-  facebookUrl String?
+  phone           String?
+  lineId          String?
+  facebookUrl     String?
+  electricityRate Int?
+  waterRate       Int?
+  deposit         Int?
   images      String[]
   amenities   String[]
   isAvailable Boolean  @default(true)

@@ -23,6 +23,9 @@ export default function NewListingPage() {
     phone: "",
     lineId: "",
     facebookUrl: "",
+    electricityRate: "",
+    waterRate: "",
+    deposit: "",
     amenities: [] as string[],
   });
   const [images, setImages] = useState<string[]>([]);
@@ -249,6 +252,12 @@ export default function NewListingPage() {
         <div className="grid grid-cols-2 gap-4">
           {field("LINE ID", input("lineId", { placeholder: "@nudorm หรือ nudorm66" }))}
           {field("Facebook URL", input("facebookUrl", { placeholder: "facebook.com/yourpage" }))}
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          {field("ค่าไฟ (บาท/หน่วย)", input("electricityRate", { type: "number", min: "0", placeholder: "8" }))}
+          {field("ค่าน้ำ (บาท/เดือน)", input("waterRate", { type: "number", min: "0", placeholder: "100" }))}
+          {field("เงินประกัน (บาท)", input("deposit", { type: "number", min: "0", placeholder: "3000" }))}
         </div>
 
         {/* Rooms */}
