@@ -37,13 +37,16 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
-            <span className="text-white text-sm font-bold">N</span>
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md shadow-blue-200 group-hover:shadow-blue-300 transition-shadow">
+            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
           </div>
-          <span className="text-lg font-bold text-gray-900 tracking-tight">
-            NU<span className="text-blue-600">Dorm</span>
-          </span>
+          <div className="flex flex-col leading-none">
+            <span className="text-[11px] font-semibold text-blue-500 tracking-widest uppercase">Naresuan</span>
+            <span className="text-lg font-extrabold text-gray-900 tracking-tight leading-none">NU<span className="text-blue-600">Dorm</span></span>
+          </div>
         </Link>
 
         {/* Desktop links */}
