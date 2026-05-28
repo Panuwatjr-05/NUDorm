@@ -16,10 +16,7 @@ export const authConfig: NextAuthConfig = {
       session.user.role = token.role as string;
       return session;
     },
-    authorized({ auth }) {
-      return !!auth;
-    },
-  },
+},
   pages: {
     signIn: "/login",
   },

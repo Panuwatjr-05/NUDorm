@@ -111,8 +111,7 @@ export default function Navbar() {
             { href: "/dorms", label: "ค้นหาหอพัก" },
             ...(session?.user.role === "STUDENT" ? [{ href: "/compare", label: "เปรียบเทียบ" }] : []),
             ...(session?.user.role === "STUDENT" ? [{ href: "/wishlist", label: "บันทึกไว้" }] : []),
-            ...(session?.user.role === "OWNER" ? [{ href: "/dashboard", label: "Dashboard" }] : []),
-            ...(session?.user.role === "OWNER" ? [{ href: "/feedback", label: "Feedback" }] : []),
+            ...(session?.user.role === "OWNER" ? [{ href: "/dashboard", label: "Dashboard" }, { href: "/feedback", label: "Feedback" }] : []),
             ...(session?.user.role === "ADMIN" ? [{ href: "/admin", label: "Admin Panel" }] : []),
           ].map(({ href, label }) => (
             <Link

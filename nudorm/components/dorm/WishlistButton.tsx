@@ -13,8 +13,10 @@ export default function WishlistButton({ dormId, initialSaved }: { dormId: strin
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ dormId }),
     });
-    const data = await res.json();
-    setSaved(data.saved);
+    if (res.ok) {
+      const data = await res.json();
+      setSaved(data.saved);
+    }
     setLoading(false);
   }
 
