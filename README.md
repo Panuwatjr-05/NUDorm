@@ -83,15 +83,4 @@ nudorm/
 
 ใช้เป็น center ของแผนที่และจุดอ้างอิงคำนวณระยะทาง
 
-## คำสั่งที่ใช้บ่อย
-
-```bash
-npm run dev                                    # เริ่ม dev server
-npm run build                                  # build production
-npx prisma migrate dev --name <ชื่อ migration> # อัพเดท schema
-npx prisma studio                              # เปิด DB GUI
-```
-
----
-
 Built with Next.js 16 + PostgreSQL + Leaflet สำหรับนักศึกษา ม.นเรศวร
