@@ -14,46 +14,6 @@
 | Storage | Cloudinary |
 | Deploy | Vercel + Railway/Supabase |
 
-## เริ่มต้นใช้งาน
-
-### 1. ติดตั้ง Dependencies
-
-```bash
-npm install
-```
-
-### 2. ตั้งค่า Environment Variables
-
-สร้างไฟล์ `.env.local` แล้วกรอกค่า:
-
-```env
-DATABASE_URL="postgresql://..."
-NEXTAUTH_SECRET="..."
-NEXTAUTH_URL="http://localhost:3000"
-CLOUDINARY_CLOUD_NAME="..."
-CLOUDINARY_API_KEY="..."
-CLOUDINARY_API_SECRET="..."
-```
-
-### 3. ตั้งค่า Database
-
-```bash
-# สร้างตารางทั้งหมด
-npx prisma migrate dev --name init
-
-# (ถ้ามี seed) เพิ่มข้อมูลตัวอย่าง
-npx prisma db seed
-
-# เปิด Prisma Studio ดูข้อมูล
-npx prisma studio
-```
-
-### 4. เริ่ม Development Server
-
-```bash
-npm run dev
-```
-
 เปิด [http://localhost:3000](http://localhost:3000)
 
 ## บัญชีทดสอบ
